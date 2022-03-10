@@ -5,7 +5,7 @@ export class Tree{
         this.ctx = ctx;
         this.posX = posX;
         this.posY = posY;
-        this.depth = 5;
+        this.depth = 11;
         this.brunches = []; // 가지를 담을 공간
 
         this.init();
@@ -18,17 +18,23 @@ export class Tree{
     }
 
     createBrunch(startX, startY, angle, depth){
-        if(this.depth === depth) return;
-        // 가지 생성
-        const len = 100;
-        const endX = startX + len * this.cos(angle);
-        const endY = startY + len * this.sin(angle);
+        if (depth === this.depth) return;
 
-        this.brunches.push(new Brunch(startX, startY, endX, endY));
+        // random 함수를 만들어 가지들의 길이를 랜덤으로 준다.
+        // depth가 0 즉, 나무 기둥을 그릴땐 최소, 최대 길이를 달리한다.
+        const len = depth === 0 ? this.random(10, 13) : this.random(0, 11);
 
-        // recursive
-        this.createBrunch(endX,endY, angle - 30, depth + 1);
-        this.createBrunch(endX,endY, angle + 30, depth + 1);
+        // 현재 depth의 역을 곱해주어 depth가 점점 늘어날 수록 길이가 가늘게 함
+        const endX = startX + this.cos(angle) * len * (this.depth - depth);
+        const endY = startY + this.sin(angle) * len * (this.depth - depth);
+
+        this.brunches.push(
+            new Brunch(startX, startY, endX, endY, this.depth - depth)
+        );
+
+        // 각도도 랜덤하게 부여
+        this.createBrunch(endX, endY, angle - this.random(15, 23), depth + 1);
+        this.createBrunch(endX, endY, angle + this.random(15, 23), depth + 1);
     }
     draw(ctx){
         // 가지를 그린다
