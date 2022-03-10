@@ -19,7 +19,7 @@ export class Tree{
 
     createBrunch(startX, startY, angle, depth){
         if (depth === this.depth) return;
-
+        
         // random 함수를 만들어 가지들의 길이를 랜덤으로 준다.
         // depth가 0 즉, 나무 기둥을 그릴땐 최소, 최대 길이를 달리한다.
         const len = depth === 0 ? this.random(10, 13) : this.random(0, 11);
